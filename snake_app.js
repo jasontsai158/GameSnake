@@ -159,3 +159,45 @@ function sethighenstscore(score) {
     highenstscore = score;
   }
 }
+
+let touchStartX = 0;
+let touchStartY = 0;
+let touchMoveActive = false;
+
+document.addEventListener("touchstart", function (event) {
+  touchStartX = event.touches[0].clientX;
+  touchStartY = event.touches[0].clientY;
+  touchMoveActive = true;
+});
+
+document.addEventListener("touchmove", function (event) {
+  if (!touchMoveActive) return;
+
+  let touchEndX = event.touches[0].clientX;
+  let touchEndY = event.touches[0].clientY;
+
+  let deltaX = touchEndX - touchStartX;
+  let deltaY = touchEndY - touchStartY;
+
+  if (Math.abs(deltaX) > Math.abs(deltaY)) {
+    // 水平移动更多，改变水平方向
+    if (deltaX > 0 && d !== "left") {
+      d = "right";
+    } else if (deltaX < 0 && d !== "right") {
+      d = "left";
+    }
+  } else {
+    // 垂直移动更多，改变垂直方向
+    if (deltaY > 0 && d !== "up") {
+      d = "down";
+    } else if (deltaY < 0 && d !== "down") {
+      d = "up";
+    }
+  }
+  // 防止滑动过程中页面滚动
+  event.preventDefault();
+});
+
+document.addEventListener("touchend", function (event) {
+  touchMoveActive = false;
+});
