@@ -159,8 +159,8 @@ function sethighenstscore(score) {
     highenstscore = score;
   }
 }
-// 监听触摸开始事件
-document.addEventListener("touchstart", function (event) {
+// 设置一个函数来处理触摸事件
+function handleTouch(event) {
   // 获取触摸点的坐标
   let touchX = event.touches[0].clientX;
   let touchY = event.touches[0].clientY;
@@ -174,20 +174,22 @@ document.addEventListener("touchstart", function (event) {
   let deltaY = touchY - snakeY;
 
   // 判断触摸点在蛇头的左边还是右边
-  if (deltaX > 0) {
-    // 触摸点在蛇头的右边，向右移动
-    d = "right";
+  if (Math.abs(deltaX) > Math.abs(deltaY)) {
+    // 水平距离更大，判断左右方向
+    if (deltaX > 0) {
+      d = "right";
+    } else {
+      d = "left";
+    }
   } else {
-    // 触摸点在蛇头的左边，向左移动
-    d = "left";
+    // 垂直距离更大，判断上下方向
+    if (deltaY > 0) {
+      d = "down";
+    } else {
+      d = "up";
+    }
   }
+}
 
-  // 判断触摸点在蛇头的上面还是下面
-  if (deltaY > 0) {
-    // 触摸点在蛇头的下面，向下移动
-    d = "down";
-  } else {
-    // 触摸点在蛇头的上面，向上移动
-    d = "up";
-  }
-});
+// 初始化时调用触摸事件处理函数
+document.addEventListener("touchstart", handleTouch);
