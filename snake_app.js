@@ -159,67 +159,35 @@ function sethighenstscore(score) {
     highenstscore = score;
   }
 }
-
-let touchStartX = 0;
-let touchStartY = 0;
-let touchMoveActive = false;
-
-document.addEventListener("touchstart", function (event) {
-  touchStartX = event.touches[0].clientX;
-  touchStartY = event.touches[0].clientY;
-  touchMoveActive = true;
-});
-
-document.addEventListener("touchmove", function (event) {
-  if (!touchMoveActive) return;
-
-  let touchEndX = event.touches[0].clientX;
-  let touchEndY = event.touches[0].clientY;
-
-  let deltaX = touchEndX - touchStartX;
-  let deltaY = touchEndY - touchStartY;
-
-  if (Math.abs(deltaX) > Math.abs(deltaY)) {
-    // 水平移动更多，改变水平方向
-    if (deltaX > 0 && d !== "left") {
-      d = "right";
-    } else if (deltaX < 0 && d !== "right") {
-      d = "left";
-    }
-  } else {
-    // 垂直移动更多，改变垂直方向
-    if (deltaY > 0 && d !== "up") {
-      d = "down";
-    } else if (deltaY < 0 && d !== "down") {
-      d = "up";
-    }
-  }
-  // 防止滑动过程中页面滚动
-  event.preventDefault();
-});
-
-document.addEventListener("touchend", function (event) {
-  touchMoveActive = false;
-});
-// 设置一个变量来跟踪触摸是否活跃
-let touchActive = false;
-
 // 监听触摸开始事件
 document.addEventListener("touchstart", function (event) {
-  // 标记触摸活跃
-  touchActive = true;
-});
+  // 获取触摸点的坐标
+  let touchX = event.touches[0].clientX;
+  let touchY = event.touches[0].clientY;
 
-// 监听触摸结束事件
-document.addEventListener("touchend", function (event) {
-  // 标记触摸结束
-  touchActive = false;
-});
+  // 获取蛇头的坐标
+  let snakeX = snake[0].x;
+  let snakeY = snake[0].y;
 
-// 监听触摸滚动事件
-document.addEventListener("touchmove", function (event) {
-  // 如果触摸活跃，则阻止默认滚动行为
-  if (touchActive) {
-    event.preventDefault();
+  // 计算触摸点与蛇头的相对位置
+  let deltaX = touchX - snakeX;
+  let deltaY = touchY - snakeY;
+
+  // 判断触摸点在蛇头的左边还是右边
+  if (deltaX > 0) {
+    // 触摸点在蛇头的右边，向右移动
+    d = "right";
+  } else {
+    // 触摸点在蛇头的左边，向左移动
+    d = "left";
+  }
+
+  // 判断触摸点在蛇头的上面还是下面
+  if (deltaY > 0) {
+    // 触摸点在蛇头的下面，向下移动
+    d = "down";
+  } else {
+    // 触摸点在蛇头的上面，向上移动
+    d = "up";
   }
 });
