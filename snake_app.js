@@ -201,3 +201,25 @@ document.addEventListener("touchmove", function (event) {
 document.addEventListener("touchend", function (event) {
   touchMoveActive = false;
 });
+// 设置一个变量来跟踪触摸是否活跃
+let touchActive = false;
+
+// 监听触摸开始事件
+document.addEventListener("touchstart", function (event) {
+  // 标记触摸活跃
+  touchActive = true;
+});
+
+// 监听触摸结束事件
+document.addEventListener("touchend", function (event) {
+  // 标记触摸结束
+  touchActive = false;
+});
+
+// 监听触摸滚动事件
+document.addEventListener("touchmove", function (event) {
+  // 如果触摸活跃，则阻止默认滚动行为
+  if (touchActive) {
+    event.preventDefault();
+  }
+});
